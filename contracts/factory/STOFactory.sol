@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 // SPDX-License-Identifier: MIT
 import "./CloneFactory.sol";
 import "../token/KonneticToken.sol";
+import "../factory/stoRegistry.sol";
+
 /**
 MIT License
 Copyright (c) 2020 Openlaw
