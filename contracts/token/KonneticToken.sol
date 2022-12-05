@@ -34,7 +34,7 @@ import '../compliance/ICompliance.sol';
 import './Storage.sol';
 import '../roles/AgentRoleUpgradeable.sol';
 
-contract Token is IToken, AgentRoleUpgradeable, TokenStorage {
+contract KonneticToken is IToken, AgentRoleUpgradeable, TokenStorage {
 
     /**
      *  @dev the constructor initiates the token contract
