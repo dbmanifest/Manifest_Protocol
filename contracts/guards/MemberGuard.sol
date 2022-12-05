@@ -46,7 +46,4 @@ abstract contract MemberGuard {
         require(isActiveMember(sto, _addr), "onlyMember");
     }
 
-
-        return sto.isMember(_addr);
-    }
 }
