@@ -462,26 +462,5 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         require(extensions[extensionId] != address(0), "extension not found");
         return extensions[extensionId];
     }
-
-    /**
-     * PROPOSALS
-     */
-
-    /**
-     * @notice Submit proposals to the sto registry
-     */
-    function submitProposal(bytes32 proposalId)
-        external
-        hasAccess(this, AclFlag.SUBMIT_PROPOSAL)
-    {
-        require(proposalId != bytes32(0), "invalid proposalId");
-        require(
-            !getProposalFlag(proposalId, ProposalFlag.EXISTS),
-            "proposalId must be unique"
-        );
-        proposals[proposalId] = Proposal(msg.sender, 1); // 1 means that only the first flag is being set i.e. EXISTS
-        emit SubmittedProposal(proposalId, 1);
-    }
-
    
 }
