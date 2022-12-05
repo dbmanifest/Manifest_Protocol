@@ -83,7 +83,6 @@ library stoHelper {
         view
         returns (address)
     {
-        address memberAddress = sto.getAddressIfDelegated(addr);
         address delegatedAddress = sto.getCurrentDelegateKey(addr);
 
         require(
