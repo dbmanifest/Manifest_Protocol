@@ -132,7 +132,6 @@ contract stoFactory is CloneFactory {
         address extension,
         Adapter[] calldata adapters
     ) external {
-        require(sto.isMember(msg.sender), "not member");
         //Registring Adapters
         require(
             sto.state() == stoRegistry.stoState.CREATION,
@@ -157,7 +156,6 @@ contract stoFactory is CloneFactory {
      * @param adapter Adapter that will be replacing the currently-existing adapter of the same ID.
      */
     function updateAdapter(stoRegistry sto, Adapter calldata adapter) external {
-        require(sto.isMember(msg.sender), "not member");
         require(
             sto.state() == stoRegistry.stoState.CREATION,
             "this sto has already been setup"
