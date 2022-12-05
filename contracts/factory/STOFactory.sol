@@ -100,7 +100,7 @@ contract stoFactory is CloneFactory {
     function addAdapters(stoRegistry sto, Adapter[] calldata adapters)
         external
     {
-        require(sto.isMember(msg.sender), "not member");
+        
         //Registring Adapters
         require(
             sto.state() == stoRegistry.stoState.CREATION,
