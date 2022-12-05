@@ -89,7 +89,7 @@ library stoHelper {
             memberAddress == delegatedAddress || delegatedAddress == addr,
             "call with your delegate key"
         );
-        return addr
+        return addr;
         
     }
 
