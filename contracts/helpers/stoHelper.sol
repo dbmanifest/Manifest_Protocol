@@ -137,9 +137,6 @@ library stoHelper {
         returns (bool)
     {
         return
-            sto.state() == stoRegistry.stoState.CREATION &&
-            (sto.getNbMembers() == 0 ||
-                sto.isMember(msg.sender) ||
-                sto.isAdapter(msg.sender));
+            sto.state() == stoRegistry.stoState.CREATION;
     }
 }
