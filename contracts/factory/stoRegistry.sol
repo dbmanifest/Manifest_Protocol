@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import "../guards/AdapterGuard.sol";
 import "../guards/MemberGuard.sol";
 import "../extensions/IExtension.sol";
-import "../helpers/DaoHelper.sol";
+import "../helpers/stoHelper.sol";
 
 /**
 MIT License
@@ -27,7 +27,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-contract DaoRegistry is MemberGuard, AdapterGuard {
+contract stoRegistry is MemberGuard, AdapterGuard {
     /**
      * EVENTS
      */
@@ -50,7 +50,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
     event ConfigurationUpdated(bytes32 key, uint256 value);
     event AddressConfigurationUpdated(bytes32 key, address value);
 
-    enum DaoState {
+    enum stoState {
         CREATION,
         READY
     }
@@ -81,13 +81,13 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
      * STRUCTURES
      */
     struct Proposal {
-        /// the structure to track all the proposals in the DAO
-        address adapterAddress; /// the adapter address that called the functions to change the DAO state
+        /// the structure to track all the proposals in the sto
+        address adapterAddress; /// the adapter address that called the functions to change the sto state
         uint256 flags; /// flags to track the state of the proposal: exist, sponsored, processed, canceled, etc.
     }
 
     struct Member {
-        /// the structure to track all the members in the DAO
+        /// the structure to track all the members in the sto
         uint256 flags; /// flags to track the state of the member: exists, etc
     }
 
@@ -121,10 +121,10 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
     /// @notice internally tracks deployment under eip-1167 proxy pattern
     bool public initialized = false;
 
-    /// @notice The dao state starts as CREATION and is changed to READY after the finalizeDao call
-    DaoState public state;
+    /// @notice The sto state starts as CREATION and is changed to READY after the finalizesto call
+    stoState public state;
 
-    /// @notice The map to track all members of the DAO with their existing flags
+    /// @notice The map to track all members of the sto with their existing flags
     mapping(address => Member) public members;
     /// @notice The list of members
     address[] private _members;
@@ -132,19 +132,19 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
     /// @notice delegate key => member address mapping
     mapping(address => address) public memberAddressesByDelegatedKey;
 
-    /// @notice The map that keeps track of all proposasls submitted to the DAO
+    /// @notice The map that keeps track of all proposasls submitted to the sto
     mapping(bytes32 => Proposal) public proposals;
     /// @notice The map that tracks the voting adapter address per proposalId: proposalId => adapterAddress
     mapping(bytes32 => address) public votingAdapter;
-    /// @notice The map that keeps track of all adapters registered in the DAO: sha3(adapterId) => adapterAddress
+    /// @notice The map that keeps track of all adapters registered in the sto: sha3(adapterId) => adapterAddress
     mapping(bytes32 => address) public adapters;
     /// @notice The inverse map to get the adapter id based on its address
     mapping(address => AdapterEntry) public inverseAdapters;
-    /// @notice The map that keeps track of all extensions registered in the DAO: sha3(extId) => extAddress
+    /// @notice The map that keeps track of all extensions registered in the sto: sha3(extId) => extAddress
     mapping(bytes32 => address) public extensions;
     /// @notice The inverse map to get the extension id based on its address
     mapping(address => ExtensionEntry) public inverseExtensions;
-    /// @notice The map that keeps track of configuration parameters for the DAO and adapters: sha3(configId) => numericValue
+    /// @notice The map that keeps track of configuration parameters for the sto and adapters: sha3(configId) => numericValue
     mapping(bytes32 => uint256) public mainConfiguration;
     /// @notice The map to track all the configuration of type Address: sha3(configId) => addressValue
     mapping(bytes32 => address) public addressConfiguration;
@@ -165,15 +165,15 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
     constructor() {}
 
     /**
-     * @notice Initialises the DAO
+     * @notice Initialises the sto
      * @dev Involves initialising available tokens, checkpoints, and membership of creator
      * @dev Can only be called once
-     * @param creator The DAO's creator, who will be an initial member
-     * @param payer The account which paid for the transaction to create the DAO, who will be an initial member
+     * @param creator The sto's creator, who will be an initial member
+     * @param payer The account which paid for the transaction to create the sto, who will be an initial member
      */
     //slither-disable-next-line reentrancy-no-eth
     function initialize(address creator, address payer) external {
-        require(!initialized, "dao already initialized");
+        require(!initialized, "sto already initialized");
         initialized = true;
         potentialNewMember(msg.sender);
         potentialNewMember(creator);
@@ -185,14 +185,14 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
      */
 
     /**
-     * @dev Sets the state of the dao to READY
+     * @dev Sets the state of the sto to READY
      */
-    function finalizeDao() external {
+    function finalizesto() external {
         require(
             isActiveMember(this, msg.sender) || isAdapter(msg.sender),
             "not allowed to finalize"
         );
-        state = DaoState.READY;
+        state = stoState.READY;
     }
 
     /**
@@ -338,7 +338,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
         returns (bool)
     {
         return
-            DaoHelper.getFlag(inverseAdapters[adapterAddress].acl, uint8(flag));
+            stoHelper.getFlag(inverseAdapters[adapterAddress].acl, uint8(flag));
     }
 
     /**
@@ -444,7 +444,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
     ) external view returns (bool) {
         return
             isAdapter(adapterAddress) &&
-            DaoHelper.getFlag(
+            stoHelper.getFlag(
                 inverseExtensions[extensionAddress].acl[adapterAddress],
                 uint8(flag)
             );
@@ -468,7 +468,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
      */
 
     /**
-     * @notice Submit proposals to the DAO registry
+     * @notice Submit proposals to the sto registry
      */
     function submitProposal(bytes32 proposalId)
         external
@@ -484,7 +484,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
     }
 
     /**
-     * @notice Sponsor proposals that were submitted to the DAO registry
+     * @notice Sponsor proposals that were submitted to the sto registry
      * @dev adds SPONSORED to the proposal flag
      * @param proposalId The ID of the proposal to sponsor
      * @param sponsoringMember The member who is sponsoring the proposal
@@ -508,7 +508,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
         );
 
         require(
-            !DaoHelper.getFlag(flags, uint8(ProposalFlag.PROCESSED)),
+            !stoHelper.getFlag(flags, uint8(ProposalFlag.PROCESSED)),
             "proposal already processed"
         );
         votingAdapter[proposalId] = votingAdapterAddr;
@@ -516,7 +516,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
     }
 
     /**
-     * @notice Mark a proposal as processed in the DAO registry
+     * @notice Mark a proposal as processed in the sto registry
      * @param proposalId The ID of the proposal that is being processed
      */
     function processProposal(bytes32 proposalId) external {
@@ -545,8 +545,8 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
 
         uint256 flags = proposal.flags;
         require(
-            DaoHelper.getFlag(flags, uint8(ProposalFlag.EXISTS)),
-            "proposal does not exist for this dao"
+            stoHelper.getFlag(flags, uint8(ProposalFlag.EXISTS)),
+            "proposal does not exist for this sto"
         );
 
         require(
@@ -554,9 +554,9 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
             "invalid adapter try to set flag"
         );
 
-        require(!DaoHelper.getFlag(flags, uint8(flag)), "flag already set");
+        require(!stoHelper.getFlag(flags, uint8(flag)), "flag already set");
 
-        flags = DaoHelper.setFlag(flags, uint8(flag), true);
+        flags = stoHelper.setFlag(flags, uint8(flag), true);
         proposals[proposalId].flags = flags;
 
         return proposals[proposalId];
@@ -572,7 +572,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
         view
         returns (bool)
     {
-        return DaoHelper.getFlag(proposals[proposalId].flags, uint8(flag));
+        return stoHelper.getFlag(proposals[proposalId].flags, uint8(flag));
     }
 
     /**
@@ -591,11 +591,11 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
 
         Member storage member = members[memberAddress];
         require(
-            DaoHelper.getFlag(member.flags, uint8(MemberFlag.EXISTS)),
+            stoHelper.getFlag(member.flags, uint8(MemberFlag.EXISTS)),
             "member does not exist"
         );
 
-        member.flags = DaoHelper.setFlag(
+        member.flags = stoHelper.setFlag(
             member.flags,
             uint8(MemberFlag.JAILED),
             true
@@ -614,11 +614,11 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
 
         Member storage member = members[memberAddress];
         require(
-            DaoHelper.getFlag(member.flags, uint8(MemberFlag.EXISTS)),
+            stoHelper.getFlag(member.flags, uint8(MemberFlag.EXISTS)),
             "member does not exist"
         );
 
-        member.flags = DaoHelper.setFlag(
+        member.flags = stoHelper.setFlag(
             member.flags,
             uint8(MemberFlag.JAILED),
             false
@@ -631,14 +631,14 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
      */
     function notJailed(address memberAddress) external view returns (bool) {
         return
-            !DaoHelper.getFlag(
+            !stoHelper.getFlag(
                 members[memberAddress].flags,
                 uint8(MemberFlag.JAILED)
             );
     }
 
     /**
-     * @notice Registers a member address in the DAO if it is not registered or invalid.
+     * @notice Registers a member address in the sto if it is not registered or invalid.
      * @notice A potential new member is a member that holds no shares, and its registration still needs to be voted on.
      */
     function potentialNewMember(address memberAddress)
@@ -648,12 +648,12 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
         require(memberAddress != address(0x0), "invalid member address");
 
         Member storage member = members[memberAddress];
-        if (!DaoHelper.getFlag(member.flags, uint8(MemberFlag.EXISTS))) {
+        if (!stoHelper.getFlag(member.flags, uint8(MemberFlag.EXISTS))) {
             require(
                 memberAddressesByDelegatedKey[memberAddress] == address(0x0),
                 "member address already taken as delegated key"
             );
-            member.flags = DaoHelper.setFlag(
+            member.flags = stoHelper.setFlag(
                 member.flags,
                 uint8(MemberFlag.EXISTS),
                 true
@@ -662,14 +662,14 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
             _members.push(memberAddress);
         }
 
-        address bankAddress = extensions[DaoHelper.BANK];
+        address bankAddress = extensions[stoHelper.BANK];
         if (bankAddress != address(0x0)) {
             BankExtension bank = BankExtension(bankAddress);
-            if (bank.balanceOf(memberAddress, DaoHelper.MEMBER_COUNT) == 0) {
+            if (bank.balanceOf(memberAddress, stoHelper.MEMBER_COUNT) == 0) {
                 bank.addToBalance(
                     this,
                     memberAddress,
-                    DaoHelper.MEMBER_COUNT,
+                    stoHelper.MEMBER_COUNT,
                     1
                 );
             }
@@ -677,7 +677,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
     }
 
     /**
-     * @return Whether or not a given address is a member of the DAO.
+     * @return Whether or not a given address is a member of the sto.
      * @dev it will resolve by delegate key, not member address.
      * @param addr The address to look up
      */
@@ -696,7 +696,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
         view
         returns (bool)
     {
-        return DaoHelper.getFlag(members[memberAddress].flags, uint8(flag));
+        return stoHelper.getFlag(members[memberAddress].flags, uint8(flag));
     }
 
     /**
@@ -744,7 +744,7 @@ contract DaoRegistry is MemberGuard, AdapterGuard {
 
         Member storage member = members[memberAddr];
         require(
-            DaoHelper.getFlag(member.flags, uint8(MemberFlag.EXISTS)),
+            stoHelper.getFlag(member.flags, uint8(MemberFlag.EXISTS)),
             "member does not exist"
         );
 

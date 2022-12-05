@@ -2,7 +2,7 @@ pragma solidity ^0.8.0;
 
 // SPDX-License-Identifier: MIT
 import "./CloneFactory.sol";
-import "../token/Token.sol
+import "../token/KonneticToken.sol
 /**
 MIT License
 Copyright (c) 2020 Openlaw
@@ -62,7 +62,7 @@ contract stoFactory is CloneFactory {
             addresses[hashedName] == address(0x0),
             string(abi.encodePacked("name ", stoName, " already taken"))
         );
-        
+
         KonneticToken sto = KonneticToken(_createClone(identityAddress));
 
         address stoAddr = address(sto);

@@ -1,5 +1,5 @@
 pragma solidity ^0.8.0;
-import "../core/stoRegistry.sol";
+import "../factory/stoRegistry.sol";
 
 // SPDX-License-Identifier: MIT
 
