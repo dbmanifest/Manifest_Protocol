@@ -12,7 +12,7 @@ module.exports = {
   networks: {
     coverage: {
       host: 'localhost',
-      network_id: '1670215246065',
+      network_id: 1670215246065,
       port: 7545,
       gas: 0xfffffffffff,
       gasPrice: 0x01,
