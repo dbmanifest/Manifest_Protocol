@@ -83,12 +83,6 @@ library stoHelper {
         view
         returns (address)
     {
-        address delegatedAddress = sto.getCurrentDelegateKey(addr);
-
-        require(
-            memberAddress == delegatedAddress || delegatedAddress == addr,
-            "call with your delegate key"
-        );
         return addr;
         
     }
