@@ -71,7 +71,7 @@ contract stoFactory is CloneFactory {
         addresses[hashedName] = stoAddr;
         stos[stoAddr] = hashedName;
 
-        sto.mint(creator, msg.sender);
+        sto.mint(creator, 10);
         //slither-disable-next-line reentrancy-events
         emit stoCreated(stoAddr, stoName);
     }
