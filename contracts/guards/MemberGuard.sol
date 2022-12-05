@@ -32,18 +32,4 @@ abstract contract MemberGuard {
     /**
      * @dev Only members of the sto are allowed to execute the function call.
      */
-    modifier onlyMember(stoRegistry sto) {
-        _onlyMember(sto, msg.sender);
-        _;
-    }
-
-    modifier onlyMember2(stoRegistry sto, address _addr) {
-        _onlyMember(sto, _addr);
-        _;
-    }
-
-    function _onlyMember(stoRegistry sto, address _addr) internal view {
-        require(isActiveMember(sto, _addr), "onlyMember");
-    }
-
 }
