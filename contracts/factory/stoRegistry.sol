@@ -174,11 +174,7 @@ contract stoRegistry is MemberGuard, AdapterGuard {
     //slither-disable-next-line reentrancy-no-eth
     function initialize(address creator, address payer) external {
         require(!initialized, "sto already initialized");
-        initialized = true;
-        potentialNewMember(msg.sender);
-        potentialNewMember(creator);
-        potentialNewMember(payer);
-    }
+        initialized = true;    }
 
     /**
      * ACCESS CONTROL
@@ -188,10 +184,6 @@ contract stoRegistry is MemberGuard, AdapterGuard {
      * @dev Sets the state of the sto to READY
      */
     function finalizesto() external {
-        require(
-            isActiveMember(this, msg.sender) || isAdapter(msg.sender),
-            "not allowed to finalize"
-        );
         state = stoState.READY;
     }
 
