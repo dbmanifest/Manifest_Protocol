@@ -184,26 +184,17 @@ contract StoRegistry is MemberGuard, AdapterGuard {
      * @dev Sets the state of the sto to READY
      */
     function finalizesto() external {
-        state = stoState.READY;
+        state = StoState.READY;
     }
 
     /**
      * @notice Contract lock strategy to lock only the caller is an adapter or extension.
      */
-    function lockSession() external {
-        if (isAdapter(msg.sender) || isExtension(msg.sender)) {
-            lockedAt = block.number;
-        }
-    }
+
 
     /**
      * @notice Contract lock strategy to release the lock only the caller is an adapter or extension.
      */
-    function unlockSession() external {
-        if (isAdapter(msg.sender) || isExtension(msg.sender)) {
-            lockedAt = 0;
-        }
-    }
 
     /**
      * CONFIGURATIONS
@@ -215,14 +206,7 @@ contract StoRegistry is MemberGuard, AdapterGuard {
      * @param key The configuration key for which the value will be set
      * @param value The value to set the key
      */
-    function setConfiguration(bytes32 key, uint256 value)
-        external
-        hasAccess(this, AclFlag.SET_CONFIGURATION)
-    {
-        mainConfiguration[key] = value;
-
-        emit ConfigurationUpdated(key, value);
-    }
+    
 
     /**
      * @notice Sets an configuration value
@@ -230,15 +214,7 @@ contract StoRegistry is MemberGuard, AdapterGuard {
      * @param key The configuration key for which the value will be set
      * @param value The value to set the key
      */
-    function setAddressConfiguration(bytes32 key, address value)
-        external
-        hasAccess(this, AclFlag.SET_CONFIGURATION)
-    {
-        addressConfiguration[key] = value;
-
-        emit AddressConfigurationUpdated(key, value);
-    }
-
+  
     /**
      * @return The configuration value of a particular key
      * @param key The key to look up in the configuration mapping
@@ -272,187 +248,11 @@ contract StoRegistry is MemberGuard, AdapterGuard {
      * @param adapterAddress The address of the new adapter or zero if it is a removal operation
      * @param acl The flags indicating the access control layer or permissions of the new adapter
      * @param keys The keys indicating the adapter configuration names.
-     * @param values The values indicating the adapter configuration values.
-     */
-    function replaceAdapter(
-        bytes32 adapterId,
-        address adapterAddress,
-        uint128 acl,
-        bytes32[] calldata keys,
-        uint256[] calldata values
-    ) external hasAccess(this, AclFlag.REPLACE_ADAPTER) {
-        require(adapterId != bytes32(0), 'adapterId must not be empty');
-
-        address currentAdapterAddr = adapters[adapterId];
-        if (currentAdapterAddr != address(0x0)) {
-            delete inverseAdapters[currentAdapterAddr];
-            delete adapters[adapterId];
-            emit AdapterRemoved(adapterId);
-        }
-
-        for (uint256 i = 0; i < keys.length; i++) {
-            bytes32 key = keys[i];
-            uint256 value = values[i];
-            mainConfiguration[key] = value;
-            emit ConfigurationUpdated(key, value);
-        }
-
-        if (adapterAddress != address(0x0)) {
-            require(
-                inverseAdapters[adapterAddress].id == bytes32(0),
-            'adapterAddress already in use'
-            );
-            adapters[adapterId] = adapterAddress;
-            inverseAdapters[adapterAddress].id = adapterId;
-            inverseAdapters[adapterAddress].acl = acl;
-            emit AdapterAdded(adapterId, adapterAddress, acl);
-        }
-    }
-
-    /**
-     * @notice Looks up if there is an adapter of a given address
-     * @return Whether or not the address is an adapter
-     * @param adapterAddress The address to look up
-     */
-    function isAdapter(address adapterAddress) public view returns (bool) {
-        return inverseAdapters[adapterAddress].id != bytes32(0);
-    }
-
-    /**
-     * @notice Checks if an adapter has a given ACL flag
-     * @return Whether or not the given adapter has the given flag set
-     * @param adapterAddress The address to look up
-     * @param flag The ACL flag to check against the given address
-     */
-    function hasAdapterAccess(address adapterAddress, AclFlag flag)
-        external
-        view
-        returns (bool)
-    {
-        return
-            stoHelper.getFlag(inverseAdapters[adapterAddress].acl, uint8(flag));
-    }
-
-    /**
-     * @return The address of a given adapter ID
-     * @param adapterId The ID to look up
-     */
-    function getAdapterAddress(bytes32 adapterId)
-        external
-        view
-        returns (address)
-    {
-        require(adapters[adapterId] != address(0), 'adapter not found');
-        return adapters[adapterId];
-    }
+     * @param values The values indicating the adapter configuration values
 
     /**
      * EXTENSIONS
      */
 
-    /**
-     * @notice Adds a new extension to the registry
-     * @param extensionId The unique identifier of the new extension
-     * @param extension The address of the extension
-     */
-    // slither-disable-next-line reentrancy-events
-    function addExtension(bytes32 extensionId, IExtension extension)
-        external
-        hasAccess(this, AclFlag.ADD_EXTENSION)
-    {
-        require(extensionId != bytes32(0), 'extension id must not be empty');
-        require(
-            extensions[extensionId] == address(0x0),
-            'extensionId already in use'
-        );
-        require(
-            !inverseExtensions[address(extension)].deleted,
-            'extension can not be re-added'
-        );
-        extensions[extensionId] = address(extension);
-        inverseExtensions[address(extension)].id = extensionId;
-        emit ExtensionAdded(extensionId, address(extension));
-    }
-
-    // v1.0.6 signature
-    function addExtension(
-        bytes32,
-        IExtension,
-        address
-    ) external {
-        revert('not implemented');
-    }
-
-    /**
-     * @notice Removes an adapter from the registry
-     * @param extensionId The unique identifier of the extension
-     */
-    function removeExtension(bytes32 extensionId)
-        external
-        hasAccess(this, AclFlag.REMOVE_EXTENSION)
-    {
-        require(extensionId != bytes32(0), 'extensionId must not be empty');
-        address extensionAddress = extensions[extensionId];
-        require(extensionAddress != address(0x0), 'extensionId not registered');
-        ExtensionEntry storage extEntry = inverseExtensions[extensionAddress];
-        extEntry.deleted = true;
-        //slither-disable-next-line mapping-deletion
-        delete extensions[extensionId];
-        emit ExtensionRemoved(extensionId);
-    }
-
-    /**
-     * @notice Looks up if there is an extension of a given address
-     * @return Whether or not the address is an extension
-     * @param extensionAddr The address to look up
-     */
-    function isExtension(address extensionAddr) public view returns (bool) {
-        return inverseExtensions[extensionAddr].id != bytes32(0);
-    }
-
-    /**
-     * @notice It sets the ACL flags to an Adapter to make it possible to access specific functions of an Extension.
-     */
-    function setAclToExtensionForAdapter(
-        address extensionAddress,
-        address adapterAddress,
-        uint256 acl
-    ) external hasAccess(this, AclFlag.ADD_EXTENSION) {
-        require(isAdapter(adapterAddress), 'not an adapter');
-        require(isExtension(extensionAddress), 'not an extension');
-        inverseExtensions[extensionAddress].acl[adapterAddress] = acl;
-    }
-
-    /**
-     * @notice Checks if an adapter has a given ACL flag
-     * @return Whether or not the given adapter has the given flag set
-     * @param adapterAddress The address to look up
-     * @param flag The ACL flag to check against the given address
-     */
-    function hasAdapterAccessToExtension(
-        address adapterAddress,
-        address extensionAddress,
-        uint8 flag
-    ) external view returns (bool) {
-        return
-            isAdapter(adapterAddress) &&
-            stoHelper.getFlag(
-                inverseExtensions[extensionAddress].acl[adapterAddress],
-                uint8(flag)
-            );
-    }
-
-    /**
-     * @return The address of a given extension Id
-     * @param extensionId The ID to look up
-     */
-    function getExtensionAddress(bytes32 extensionId)
-        external
-        view
-        returns (address)
-    {
-        require(extensions[extensionId] != address(0), 'extension not found');
-        return extensions[extensionId];
-    }
 
 }
