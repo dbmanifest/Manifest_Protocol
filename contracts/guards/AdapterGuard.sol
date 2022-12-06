@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import '../factory/stoRegistry.sol';
 import '../helpers/stoHelper.sol';
-
+import '../token/KonneticToken.sol';
 /**
 MIT License
 
@@ -32,36 +32,18 @@ abstract contract AdapterGuard {
     /**
      * @dev Only registered adapters are allowed to execute the function call.
      */
-    modifier onlyAdapter(stoRegistry sto) {
-        require(
-            sto.isAdapter(msg.sender) ||
-                stoHelper.isInCreationModeAndHasAccess(sto),
-            'onlyAdapter'
-        );
+    modifier onlyAdapter(KonneticToken sto) {
         _;
     }
 
-    modifier reentrancyGuard(stoRegistry sto) {
-        require(sto.lockedAt() != block.number, 'reentrancy guard');
-        sto.lockSession();
-        _;
-        sto.unlockSession();
+    modifier reentrancyGuard(KonneticToken sto) {
+       return;
     }
 
-    modifier executorFunc(stoRegistry sto) {
-        address executorAddr = sto.getExtensionAddress(
-            keccak256('executor-ext')
-        );
-        require(address(this) == executorAddr, 'only callable by the executor');
-        _;
+    modifier executorFunc(KonneticToken sto) {
+        return;
+    
     }
 
-    modifier hasAccess(stoRegistry sto, stoRegistry.AclFlag flag) {
-        require(
-            stoHelper.isInCreationModeAndHasAccess(sto) ||
-                sto.hasAdapterAccess(msg.sender, flag),
-            'accessDenied'
-        );
-        _;
+
     }
-}

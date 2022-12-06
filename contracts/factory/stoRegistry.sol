@@ -454,5 +454,5 @@ contract StoRegistry is MemberGuard, AdapterGuard {
         require(extensions[extensionId] != address(0), 'extension not found');
         return extensions[extensionId];
     }
-   
+
 }
