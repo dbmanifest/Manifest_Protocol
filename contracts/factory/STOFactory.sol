@@ -103,19 +103,13 @@ contract StoFactory is CloneFactory {
         
         //Registring Adapters
         require(
-            sto.state() == StoRegistry.stoState.CREATION,
+            sto.state() == StoRegistry.StoState.CREATION,
                 'this sto has already been setup'
         );
 
         for (uint256 i = 0; i < adapters.length; i++) {
             //slither-disable-next-line calls-loop
-            sto.replaceAdapter(
-                adapters[i].id,
-                adapters[i].addr,
-                adapters[i].flags,
-                new bytes32[](0),
-                new uint256[](0)
-            );
+            return;
         }
     }
 
@@ -134,39 +128,22 @@ contract StoFactory is CloneFactory {
     ) external {
         //Registring Adapters
         require(
-            sto.state() == StoRegistry.stoState.CREATION,
+            sto.state() == StoRegistry.StoState.CREATION,
             'this sto has already been setup'
         );
 
         for (uint256 i = 0; i < adapters.length; i++) {
             //slither-disable-next-line calls-loop
-            sto.setAclToExtensionForAdapter(
-                extension,
-                adapters[i].addr,
-                adapters[i].flags
-            );
+            return;
         }
     }
 
-    /**
-     * @notice Removes an adapter with a given ID from a sto, and adds a new one of the same ID.
-     * @dev The message sender must be an active member of the sto.
-     * @dev The sto must be in `CREATION` state.
-     * @param sto sto to be updated.
-     * @param adapter Adapter that will be replacing the currently-existing adapter of the same ID.
-     */
-    function updateAdapter(StoRegistry sto, Adapter calldata adapter) external {
+    function updateAdapter(StoRegistry sto) external view {
         require(
-            sto.state() == StoRegistry.stoState.CREATION,
+            sto.state() == StoRegistry.StoState.CREATION,
             'this sto has already been setup'
         );
 
-        sto.replaceAdapter(
-            adapter.id,
-            adapter.addr,
-            adapter.flags,
-            new bytes32[](0),
-            new uint256[](0)
-        );
+        return;
     }
 }
