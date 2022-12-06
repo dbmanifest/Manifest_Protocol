@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 // SPDX-License-Identifier: MIT
 import './CloneFactory.sol';
 import '../token/KonneticToken.sol';
-import '../factory/stoRegistry.sol';
+import '../factory/StoRegistry.sol';
 
 /**
 MIT License
@@ -52,8 +52,8 @@ contract StoFactory is CloneFactory {
     }
 
     /**
-     * @notice Creates and initializes a new stoRegistry with the sto creator and the transaction sender.
-     * @notice Enters the new stoRegistry in the stoFactory state.
+     * @notice Creates and initializes a new StoRegistry with the sto creator and the transaction sender.
+     * @notice Enters the new StoRegistry in the stoFactory state.
      * @dev The stoName must not already have been taken.
      * @param stoName The name of the sto which, after being hashed, is used to access the address.
      * @param creator The sto's creator, who will be an initial member.
@@ -90,20 +90,20 @@ contract StoFactory is CloneFactory {
     }
 
     /**
-     * @notice Adds adapters and sets their ACL for stoRegistry functions.
+     * @notice Adds adapters and sets their ACL for StoRegistry functions.
      * @dev A new sto is instantiated with only the Core Modules enabled, to reduce the call cost. This call must be made to add adapters.
      * @dev The message sender must be an active member of the sto.
      * @dev The sto must be in `CREATION` state.
-     * @param sto stoRegistry to have adapters added to.
+     * @param sto StoRegistry to have adapters added to.
      * @param adapters Adapter structs to be added to the sto.
      */
-    function addAdapters(stoRegistry sto, Adapter[] calldata adapters)
+    function addAdapters(StoRegistry sto, Adapter[] calldata adapters)
         external
     {
         
         //Registring Adapters
         require(
-            sto.state() == stoRegistry.stoState.CREATION,
+            sto.state() == StoRegistry.stoState.CREATION,
                 'this sto has already been setup'
         );
 
@@ -123,18 +123,18 @@ contract StoFactory is CloneFactory {
      * @notice Configures extension to set the ACL for each adapter that needs to access the extension.
      * @dev The message sender must be an active member of the sto.
      * @dev The sto must be in `CREATION` state.
-     * @param sto stoRegistry for which the extension is being configured.
+     * @param sto StoRegistry for which the extension is being configured.
      * @param extension The address of the extension to be configured.
      * @param adapters Adapter structs for which the ACL is being set for the extension.
      */
     function configureExtension(
-        stoRegistry sto,
+        StoRegistry sto,
         address extension,
         Adapter[] calldata adapters
     ) external {
         //Registring Adapters
         require(
-            sto.state() == stoRegistry.stoState.CREATION,
+            sto.state() == StoRegistry.stoState.CREATION,
             'this sto has already been setup'
         );
 
@@ -155,9 +155,9 @@ contract StoFactory is CloneFactory {
      * @param sto sto to be updated.
      * @param adapter Adapter that will be replacing the currently-existing adapter of the same ID.
      */
-    function updateAdapter(stoRegistry sto, Adapter calldata adapter) external {
+    function updateAdapter(StoRegistry sto, Adapter calldata adapter) external {
         require(
-            sto.state() == stoRegistry.stoState.CREATION,
+            sto.state() == StoRegistry.stoState.CREATION,
             'this sto has already been setup'
         );
 

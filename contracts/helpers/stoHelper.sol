@@ -1,5 +1,5 @@
 pragma solidity ^0.8.0;
-import '../factory/stoRegistry.sol';
+import '../factory/StoRegistry.sol';
 
 // SPDX-License-Identifier: MIT
 
@@ -43,7 +43,7 @@ library stoHelper {
     bytes32 internal constant REIMBURSEMENT = keccak256('reimbursement');
     bytes32 internal constant TRANSFER_STRATEGY =
         keccak256('erc20-transfer-strategy');
-    bytes32 internal constant sto_REGISTRY_ADAPT = keccak256('stoRegistry');
+    bytes32 internal constant sto_REGISTRY_ADAPT = keccak256('StoRegistry');
     bytes32 internal constant ERC721_ADAPT = keccak256('nft');
     bytes32 internal constant ERC1155_ADAPT = keccak256('erc1155-adpt');
     bytes32 internal constant ERC1271_ADAPT = keccak256('signatures');
