@@ -24,7 +24,7 @@ SOFTWARE.
  */
 
 interface IExtension {
-    function initialize(stoRegistry sto, address creator) external;
+    function initialize(StoRegistry sto, address creator) external;
 }
 
 
