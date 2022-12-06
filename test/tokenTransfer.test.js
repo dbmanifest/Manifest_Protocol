@@ -9,14 +9,14 @@ const {
   IdentityRegistry,
   TrustedIssuersRegistry,
   IssuerIdentity,
-  Token,
+  KonneticToken,
   Compliance,
   IdentityRegistryStorage,
   Proxy,
   Implementation,
 } = require('./helpers/artifacts');
 
-contract('Token', (accounts) => {
+contract('KonneticToken', (accounts) => {
   let claimTopicsRegistry;
   let identityRegistry;
   let identityRegistryStorage;
@@ -55,7 +55,7 @@ contract('Token', (accounts) => {
     tokenName = 'TREXDINO';
     tokenSymbol = 'TREX';
     tokenDecimals = '0';
-    token = await Token.new();
+    token = await KonneticToken.new();
     // initialize implem
     await token.init(identityRegistry.address, defaultCompliance.address, tokenName, tokenSymbol, tokenDecimals, tokenOnchainID.address, {
       from: tokeny,
@@ -72,7 +72,7 @@ contract('Token', (accounts) => {
       tokenDecimals,
       tokenOnchainID.address,
     );
-    token = await Token.at(proxy.address);
+    token = await KonneticToken.at(proxy.address);
 
     await identityRegistryStorage.bindIdentityRegistry(identityRegistry.address, { from: tokeny });
     await token.addAgentOnTokenContract(agent, { from: tokeny });
@@ -178,7 +178,7 @@ contract('Token', (accounts) => {
   });
 });
 
-contract('Token', (accounts) => {
+contract('KonneticToken', (accounts) => {
   let claimTopicsRegistry;
   let identityRegistry;
   let identityRegistryStorage;
@@ -218,7 +218,7 @@ contract('Token', (accounts) => {
     tokenName = 'TREXDINO';
     tokenSymbol = 'TREX';
     tokenDecimals = '0';
-    token = await Token.new();
+    token = await KonneticToken.new();
 
     implementation = await Implementation.new(token.address);
 
@@ -231,7 +231,7 @@ contract('Token', (accounts) => {
       tokenDecimals,
       tokenOnchainID.address,
     );
-    token = await Token.at(proxy.address);
+    token = await KonneticToken.at(proxy.address);
 
     await identityRegistryStorage.bindIdentityRegistry(identityRegistry.address, { from: tokeny });
     await token.addAgentOnTokenContract(agent, { from: tokeny });
@@ -295,7 +295,7 @@ contract('Token', (accounts) => {
     allowance.toString().should.equal('400');
   });
 
-  it('Successful Token transfer', async () => {
+  it('Successful KonneticToken transfer', async () => {
     // should revert if receiver is zero address
     await token.transfer('0x0000000000000000000000000000000000000000', 300, { from: user1 }).should.be.rejectedWith(Error);
     const tx = await token.transfer(user2, 300, { from: user1 }).should.be.fulfilled;
@@ -332,7 +332,7 @@ contract('Token', (accounts) => {
     log(`[-${gasSaved} %] --> fees compared to classic transfer transaction`);
   });
 
-  it('Token transfer fails if claim signer key is removed from trusted claim issuer contract', async () => {
+  it('KonneticToken transfer fails if claim signer key is removed from trusted claim issuer contract', async () => {
     await claimIssuerContract.removeKey(signerKey, 3, { from: claimIssuer });
     await token.transfer(user2, 300, { from: user1 }).should.be.rejectedWith(EVMRevert);
     const balance1 = await token.balanceOf(user1);
@@ -341,7 +341,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('0');
   });
 
-  it('Token transfer fails if a users identity is removed from identity registry', async () => {
+  it('KonneticToken transfer fails if a users identity is removed from identity registry', async () => {
     await identityRegistry.deleteIdentity(user2, { from: agent });
     await token.transfer(user2, 300, { from: user1 }).should.be.rejectedWith(EVMRevert);
     const balance1 = await token.balanceOf(user1);
@@ -350,7 +350,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('0');
   });
 
-  it('Token transfer fails if claimTopic is removed from claimTopic registry', async () => {
+  it('KonneticToken transfer fails if claimTopic is removed from claimTopic registry', async () => {
     await claimTopicsRegistry.removeClaimTopic(7, { from: tokeny });
     await claimTopicsRegistry.addClaimTopic(8, { from: tokeny });
     await token.transfer(user2, 300, { from: user1 }).should.be.rejectedWith(EVMRevert);
@@ -360,7 +360,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('0');
   });
 
-  it('Token transfer fails if trusted claim issuer is removed from claimIssuers registry', async () => {
+  it('KonneticToken transfer fails if trusted claim issuer is removed from claimIssuers registry', async () => {
     await trustedIssuersRegistry.removeTrustedIssuer(claimIssuerContract.address, { from: tokeny });
     await token.transfer(user2, 300, { from: user1 }).should.be.rejectedWith(EVMRevert);
     const balance1 = await token.balanceOf(user1);
@@ -369,7 +369,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('0');
   });
 
-  it('Token transfer passes if ClaimTopicRegistry has no claim', async () => {
+  it('KonneticToken transfer passes if ClaimTopicRegistry has no claim', async () => {
     // Tokeny remove trusted claim Topic to claim topics registry
     await claimTopicsRegistry.removeClaimTopic(7, { from: tokeny }).should.be.fulfilled;
     await token.transfer(user2, 300, { from: user1 }).should.be.fulfilled;
@@ -379,7 +379,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('300');
   });
 
-  it('Token transfer fails if ClaimTopicRegistry have some claims but no trusted issuer is added', async () => {
+  it('KonneticToken transfer fails if ClaimTopicRegistry have some claims but no trusted issuer is added', async () => {
     // Tokeny remove trusted claim Issuer to claimIssuer registry
     await trustedIssuersRegistry.removeTrustedIssuer(claimIssuerContract.address, { from: tokeny }).should.be.fulfilled;
     await token.transfer(user2, 300, { from: user1 }).should.be.rejectedWith(EVMRevert);
@@ -389,7 +389,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('0');
   });
 
-  it('Token transfer fails if claimId is revoked', async () => {
+  it('KonneticToken transfer fails if claimId is revoked', async () => {
     // Tokeny adds trusted claim Topic to claim topics registry
     await claimTopicsRegistry.addClaimTopic(3, { from: tokeny }).should.be.fulfilled;
     // user2 gets signature from claim issuer
@@ -413,7 +413,7 @@ contract('Token', (accounts) => {
     balance1.toString().should.equal('1000');
   });
 
-  it('Token transfer passes if same topic claim added by different issuer', async () => {
+  it('KonneticToken transfer passes if same topic claim added by different issuer', async () => {
     const claimIssuer2 = accounts[6];
     // Claim issuer deploying identity contract
     const claimIssuer2Contract = await IssuerIdentity.new(claimIssuer2, { from: claimIssuer2 });
@@ -440,7 +440,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('300');
   });
 
-  it('Token transfer fails if trusted issuer do not have claim topic', async () => {
+  it('KonneticToken transfer fails if trusted issuer do not have claim topic', async () => {
     const claimIssuer2 = accounts[6];
     // Claim issuer deploying identity contract
     const claimIssuer2Contract = await IssuerIdentity.new(claimIssuer2, { from: claimIssuer2 });
@@ -659,7 +659,7 @@ contract('Token', (accounts) => {
     await token.unfreezePartialTokens(user1, 500, { from: agent }).should.be.rejectedWith(EVMRevert);
   });
 
-  it('Token transfer fails if amount exceeds unfrozen tokens', async () => {
+  it('KonneticToken transfer fails if amount exceeds unfrozen tokens', async () => {
     const tx = await token.freezePartialTokens(user1, 800, { from: agent });
     log(`[${calculateETH(gasAverage, tx.receipt.gasUsed)} ETH] --> fees of freezePartialTokens transaction`);
     const frozenTokens2 = await token.getFrozenTokens(user1);
@@ -824,7 +824,7 @@ contract('Token', (accounts) => {
     await token.mint('0x0000000000000000000000000000000000000000', 1000, { from: agent }).should.be.rejectedWith(EVMRevert);
   });
 
-  it('Successfuly transfers Token if sender approved', async () => {
+  it('Successfuly transfers KonneticToken if sender approved', async () => {
     // should revert if zero address
     await token.approve('0x0000000000000000000000000000000000000000', 300, { from: user1 }).should.be.rejectedWith(EVMRevert);
     await token.approve(accounts[4], 300, { from: user1 }).should.be.fulfilled;
@@ -842,7 +842,7 @@ contract('Token', (accounts) => {
     await token.transferFrom(user1, accounts[4], 300, { from: accounts[4] }).should.be.rejectedWith(EVMRevert);
   });
 
-  it('Token cannot be mint if identity is not verified', async () => {
+  it('KonneticToken cannot be mint if identity is not verified', async () => {
     const balance1 = await token.balanceOf(user2);
     await identityRegistry.deleteIdentity(user2, { from: agent });
     await token.mint(user2, 300, { from: agent }).should.be.rejectedWith(EVMRevert);
@@ -851,7 +851,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('0');
   });
 
-  it('Token transfer fails if trusted claim issuer is removed from claimIssuers registry', async () => {
+  it('KonneticToken transfer fails if trusted claim issuer is removed from claimIssuers registry', async () => {
     await trustedIssuersRegistry.removeTrustedIssuer(claimIssuerContract.address, { from: tokeny });
     await token.transfer(user2, 300, { from: user1 }).should.be.rejectedWith(EVMRevert);
     const balance1 = await token.balanceOf(user1);
@@ -894,7 +894,7 @@ contract('Token', (accounts) => {
     balance.toString().should.equal('700');
   });
 
-  it('Token transfer fails if address is frozen', async () => {
+  it('KonneticToken transfer fails if address is frozen', async () => {
     const tx = await token.setAddressFrozen(user1, true, { from: agent });
     log(`[${calculateETH(gasAverage, tx.receipt.gasUsed)} ETH] --> fees of setAddressFrozen transaction`);
     await token.transfer(user2, 300, { from: user1 }).should.be.rejectedWith(EVMRevert);
@@ -904,7 +904,7 @@ contract('Token', (accounts) => {
     balance2.toString().should.equal('0');
   });
 
-  it('Token transfer from fails if address is frozen', async () => {
+  it('KonneticToken transfer from fails if address is frozen', async () => {
     await token.setAddressFrozen(user1, true, { from: agent });
     await token.approve(accounts[4], 300, { from: user1 }).should.be.fulfilled;
     await token.transferFrom(user1, user2, 300, { from: accounts[4] }).should.be.rejectedWith(EVMRevert);

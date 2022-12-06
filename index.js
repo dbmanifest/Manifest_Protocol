@@ -8,7 +8,7 @@ const IIdentityRegistry = require('./build/contracts/IIdentityRegistry');
 const IIdentityRegistryStorage = require('./build/contracts/IIdentityRegistryStorage');
 const IToken = require('./build/contracts/IToken');
 const ITrustedIssuersRegistry = require('./build/contracts/ITrustedIssuersRegistry');
-const Token = require('./build/contracts/Token');
+const KonneticToken = require('./build/contracts/KonneticToken');
 const TrustedIssuersRegistry = require('./build/contracts/TrustedIssuersRegistry');
 const DVDTransferManager = require('./build/contracts/DVDTransferManager');
 const TestERC20 = require('./build/contracts/TestERC20');
@@ -23,7 +23,7 @@ module.exports = {
     DefaultCompliance,
     IdentityRegistry,
     IdentityRegistryStorage,
-    Token,
+    KonneticToken,
     TrustedIssuersRegistry,
     DVDTransferManager,
     TestERC20,

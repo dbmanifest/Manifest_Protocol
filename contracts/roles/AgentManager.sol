@@ -39,7 +39,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `forcedTransfer` function on the Token contract
+     *  @dev calls the `forcedTransfer` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-forcedTransfer}.
      *  Requires that `_onchainID` is set as TransferManager on the AgentManager contract
@@ -60,7 +60,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `batchForcedTransfer` function on the Token contract
+     *  @dev calls the `batchForcedTransfer` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-batchForcedTransfer}.
      *  Requires that `_onchainID` is set as TransferManager on the AgentManager contract
@@ -81,7 +81,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `pause` function on the Token contract
+     *  @dev calls the `pause` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-pause}.
      *  Requires that `_onchainID` is set as Freezer on the AgentManager contract
@@ -94,7 +94,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `unpause` function on the Token contract
+     *  @dev calls the `unpause` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-unpause}.
      *  Requires that `_onchainID` is set as Freezer on the AgentManager contract
@@ -107,7 +107,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `mint` function on the Token contract
+     *  @dev calls the `mint` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-mint}.
      *  Requires that `_onchainID` is set as SupplyModifier on the AgentManager contract
@@ -127,7 +127,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `batchMint` function on the Token contract
+     *  @dev calls the `batchMint` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-batchMint}.
      *  Requires that `_onchainID` is set as SupplyModifier on the AgentManager contract
@@ -147,7 +147,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `burn` function on the Token contract
+     *  @dev calls the `burn` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-burn}.
      *  Requires that `_onchainID` is set as SupplyModifier on the AgentManager contract
@@ -167,7 +167,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `batchBurn` function on the Token contract
+     *  @dev calls the `batchBurn` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-batchBurn}.
      *  Requires that `_onchainID` is set as SupplyModifier on the AgentManager contract
@@ -187,7 +187,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `setAddressFrozen` function on the Token contract
+     *  @dev calls the `setAddressFrozen` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-setAddressFrozen}.
      *  Requires that `_onchainID` is set as Freezer on the AgentManager contract
@@ -204,7 +204,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `batchSetAddressFrozen` function on the Token contract
+     *  @dev calls the `batchSetAddressFrozen` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-batchSetAddressFrozen}.
      *  Requires that `_onchainID` is set as Freezer on the AgentManager contract
@@ -221,7 +221,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `freezePartialTokens` function on the Token contract
+     *  @dev calls the `freezePartialTokens` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-freezePartialTokens}.
      *  Requires that `_onchainID` is set as Freezer on the AgentManager contract
@@ -238,7 +238,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `batchFreezePartialTokens` function on the Token contract
+     *  @dev calls the `batchFreezePartialTokens` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-batchFreezePartialTokens}.
      *  Requires that `_onchainID` is set as Freezer on the AgentManager contract
@@ -255,7 +255,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `unfreezePartialTokens` function on the Token contract
+     *  @dev calls the `unfreezePartialTokens` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-unfreezePartialTokens}.
      *  Requires that `_onchainID` is set as Freezer on the AgentManager contract
@@ -272,7 +272,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `batchUnfreezePartialTokens` function on the Token contract
+     *  @dev calls the `batchUnfreezePartialTokens` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-batchUnfreezePartialTokens}.
      *  Requires that `_onchainID` is set as Freezer on the AgentManager contract
@@ -289,7 +289,7 @@ contract AgentManager is AgentRoles {
     }
 
     /**
-     *  @dev calls the `recoveryAddress` function on the Token contract
+     *  @dev calls the `recoveryAddress` function on the KonneticToken contract
      *  AgentManager has to be set as agent on the token smart contract to process this function
      *  See {IToken-recoveryAddress}.
      *  Requires that `_managerOnchainID` is set as RecoveryAgent on the AgentManager contract

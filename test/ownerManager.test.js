@@ -8,7 +8,7 @@ const {
   IdentityRegistry,
   TrustedIssuersRegistry,
   IssuerIdentity,
-  Token,
+  KonneticToken,
   Compliance,
   OwnerManager,
   IdentityRegistryStorage,
@@ -54,7 +54,7 @@ contract('Owner Manager', (accounts) => {
     tokenName = 'TREXDINO';
     tokenSymbol = 'TREX';
     tokenDecimals = '0';
-    token = await Token.new();
+    token = await KonneticToken.new();
 
     implementation = await Implementation.new(token.address);
 
@@ -67,7 +67,7 @@ contract('Owner Manager', (accounts) => {
       tokenDecimals,
       tokenOnchainID.address,
     );
-    token = await Token.at(proxy.address);
+    token = await KonneticToken.at(proxy.address);
 
     ownerManager = await OwnerManager.new(token.address, { from: tokeny });
     await identityRegistryStorage.bindIdentityRegistry(identityRegistry.address, { from: tokeny });

@@ -2,10 +2,10 @@ pragma solidity ^0.8.0;
 
 // SPDX-License-Identifier: MIT
 
-import "../guards/AdapterGuard.sol";
-import "../guards/MemberGuard.sol";
-import "../extensions/IExtension.sol";
-import "../helpers/stoHelper.sol";
+import '../guards/AdapterGuard.sol';
+import '../guards/MemberGuard.sol';
+import '../extensions/IExtension.sol';
+import '../helpers/stoHelper.sol';
 
 /**
 MIT License
@@ -27,7 +27,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-contract stoRegistry is MemberGuard, AdapterGuard {
+contract StoRegistry is MemberGuard, AdapterGuard {
     /**
      * EVENTS
      */
@@ -50,7 +50,7 @@ contract stoRegistry is MemberGuard, AdapterGuard {
     event ConfigurationUpdated(bytes32 key, uint256 value);
     event AddressConfigurationUpdated(bytes32 key, address value);
 
-    enum stoState {
+    enum StoState {
         CREATION,
         READY
     }
@@ -157,9 +157,9 @@ contract stoRegistry is MemberGuard, AdapterGuard {
      */
 
     /// @notice memberAddress => checkpointNum => DelegateCheckpoint
-    mapping(address => mapping(uint32 => DelegateCheckpoint)) _checkpoints;
+    mapping(address => mapping(uint32 => DelegateCheckpoint)) private _checkpoints;
     /// @notice memberAddress => numDelegateCheckpoints
-    mapping(address => uint32) _numCheckpoints;
+    mapping(address => uint32) private _numCheckpoints;
 
     /// @notice Clonable contract must have an empty constructor
     constructor() {}
@@ -173,7 +173,7 @@ contract stoRegistry is MemberGuard, AdapterGuard {
      */
     //slither-disable-next-line reentrancy-no-eth
     function initialize(address creator, address payer) external {
-        require(!initialized, "sto already initialized");
+        require(!initialized, 'sto already initialized');
         initialized = true;    }
 
     /**
@@ -281,7 +281,7 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         bytes32[] calldata keys,
         uint256[] calldata values
     ) external hasAccess(this, AclFlag.REPLACE_ADAPTER) {
-        require(adapterId != bytes32(0), "adapterId must not be empty");
+        require(adapterId != bytes32(0), 'adapterId must not be empty');
 
         address currentAdapterAddr = adapters[adapterId];
         if (currentAdapterAddr != address(0x0)) {
@@ -300,7 +300,7 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         if (adapterAddress != address(0x0)) {
             require(
                 inverseAdapters[adapterAddress].id == bytes32(0),
-                "adapterAddress already in use"
+            'adapterAddress already in use'
             );
             adapters[adapterId] = adapterAddress;
             inverseAdapters[adapterAddress].id = adapterId;
@@ -342,7 +342,7 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         view
         returns (address)
     {
-        require(adapters[adapterId] != address(0), "adapter not found");
+        require(adapters[adapterId] != address(0), 'adapter not found');
         return adapters[adapterId];
     }
 
@@ -360,14 +360,14 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         external
         hasAccess(this, AclFlag.ADD_EXTENSION)
     {
-        require(extensionId != bytes32(0), "extension id must not be empty");
+        require(extensionId != bytes32(0), 'extension id must not be empty');
         require(
             extensions[extensionId] == address(0x0),
-            "extensionId already in use"
+            'extensionId already in use'
         );
         require(
             !inverseExtensions[address(extension)].deleted,
-            "extension can not be re-added"
+            'extension can not be re-added'
         );
         extensions[extensionId] = address(extension);
         inverseExtensions[address(extension)].id = extensionId;
@@ -380,7 +380,7 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         IExtension,
         address
     ) external {
-        revert("not implemented");
+        revert('not implemented');
     }
 
     /**
@@ -391,9 +391,9 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         external
         hasAccess(this, AclFlag.REMOVE_EXTENSION)
     {
-        require(extensionId != bytes32(0), "extensionId must not be empty");
+        require(extensionId != bytes32(0), 'extensionId must not be empty');
         address extensionAddress = extensions[extensionId];
-        require(extensionAddress != address(0x0), "extensionId not registered");
+        require(extensionAddress != address(0x0), 'extensionId not registered');
         ExtensionEntry storage extEntry = inverseExtensions[extensionAddress];
         extEntry.deleted = true;
         //slither-disable-next-line mapping-deletion
@@ -418,8 +418,8 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         address adapterAddress,
         uint256 acl
     ) external hasAccess(this, AclFlag.ADD_EXTENSION) {
-        require(isAdapter(adapterAddress), "not an adapter");
-        require(isExtension(extensionAddress), "not an extension");
+        require(isAdapter(adapterAddress), 'not an adapter');
+        require(isExtension(extensionAddress), 'not an extension');
         inverseExtensions[extensionAddress].acl[adapterAddress] = acl;
     }
 
@@ -451,7 +451,7 @@ contract stoRegistry is MemberGuard, AdapterGuard {
         view
         returns (address)
     {
-        require(extensions[extensionId] != address(0), "extension not found");
+        require(extensions[extensionId] != address(0), 'extension not found');
         return extensions[extensionId];
     }
    

@@ -1,5 +1,5 @@
 pragma solidity ^0.8.0;
-import "../factory/stoRegistry.sol";
+import '../factory/stoRegistry.sol';
 
 // SPDX-License-Identifier: MIT
 
@@ -28,44 +28,44 @@ SOFTWARE.
  */
 library stoHelper {
     // Adapters
-    bytes32 internal constant VOTING = keccak256("voting");
-    bytes32 internal constant ONBOARDING = keccak256("onboarding");
+    bytes32 internal constant VOTING = keccak256('voting');
+    bytes32 internal constant ONBOARDING = keccak256('onboarding');
     bytes32 internal constant NONVOTING_ONBOARDING =
-        keccak256("nonvoting-onboarding");
-    bytes32 internal constant TRIBUTE = keccak256("tribute");
-    bytes32 internal constant FINANCING = keccak256("financing");
-    bytes32 internal constant MANAGING = keccak256("managing");
-    bytes32 internal constant RAGEQUIT = keccak256("ragequit");
-    bytes32 internal constant GUILDKICK = keccak256("guildkick");
-    bytes32 internal constant CONFIGURATION = keccak256("configuration");
-    bytes32 internal constant DISTRIBUTE = keccak256("distribute");
-    bytes32 internal constant TRIBUTE_NFT = keccak256("tribute-nft");
-    bytes32 internal constant REIMBURSEMENT = keccak256("reimbursement");
+        keccak256('nonvoting-onboarding');
+    bytes32 internal constant TRIBUTE = keccak256('tribute');
+    bytes32 internal constant FINANCING = keccak256('financing');
+    bytes32 internal constant MANAGING = keccak256('managing');
+    bytes32 internal constant RAGEQUIT = keccak256('ragequit');
+    bytes32 internal constant GUILDKICK = keccak256('guildkick');
+    bytes32 internal constant CONFIGURATION = keccak256('configuration');
+    bytes32 internal constant DISTRIBUTE = keccak256('distribute');
+    bytes32 internal constant TRIBUTE_NFT = keccak256('tribute-nft');
+    bytes32 internal constant REIMBURSEMENT = keccak256('reimbursement');
     bytes32 internal constant TRANSFER_STRATEGY =
-        keccak256("erc20-transfer-strategy");
-    bytes32 internal constant sto_REGISTRY_ADAPT = keccak256("stoRegistry");
-    bytes32 internal constant ERC721_ADAPT = keccak256("nft");
-    bytes32 internal constant ERC1155_ADAPT = keccak256("erc1155-adpt");
-    bytes32 internal constant ERC1271_ADAPT = keccak256("signatures");
+        keccak256('erc20-transfer-strategy');
+    bytes32 internal constant sto_REGISTRY_ADAPT = keccak256('stoRegistry');
+    bytes32 internal constant ERC721_ADAPT = keccak256('nft');
+    bytes32 internal constant ERC1155_ADAPT = keccak256('erc1155-adpt');
+    bytes32 internal constant ERC1271_ADAPT = keccak256('signatures');
     bytes32 internal constant SNAPSHOT_PROPOSAL_ADPT =
-        keccak256("snapshot-proposal-adpt");
-    bytes32 internal constant VOTING_HASH_ADPT = keccak256("voting-hash-adpt");
+        keccak256('snapshot-proposal-adpt');
+    bytes32 internal constant VOTING_HASH_ADPT = keccak256('voting-hash-adpt');
     bytes32 internal constant KICK_BAD_REPORTER_ADPT =
-        keccak256("kick-bad-reporter-adpt");
+        keccak256('kick-bad-reporter-adpt');
     bytes32 internal constant COUPON_ONBOARDING_ADPT =
-        keccak256("coupon-onboarding");
-    bytes32 internal constant LEND_NFT_ADPT = keccak256("lend-nft");
+        keccak256('coupon-onboarding');
+    bytes32 internal constant LEND_NFT_ADPT = keccak256('lend-nft');
     bytes32 internal constant ERC20_TRANSFER_STRATEGY_ADPT =
-        keccak256("erc20-transfer-strategy");
+        keccak256('erc20-transfer-strategy');
 
     // Extensions
-    bytes32 internal constant ERC1271 = keccak256("erc1271");
-    bytes32 internal constant NFT = keccak256("nft");
-    bytes32 internal constant EXECUTOR_EXT = keccak256("executor-ext");
+    bytes32 internal constant ERC1271 = keccak256('erc1271');
+    bytes32 internal constant NFT = keccak256('nft');
+    bytes32 internal constant EXECUTOR_EXT = keccak256('executor-ext');
     bytes32 internal constant INTERNAL_TOKEN_VESTING_EXT =
-        keccak256("internal-token-vesting-ext");
-    bytes32 internal constant ERC1155_EXT = keccak256("erc1155-ext");
-    bytes32 internal constant ERC20_EXT = keccak256("erc20-ext");
+        keccak256('internal-token-vesting-ext');
+    bytes32 internal constant ERC1155_EXT = keccak256('erc1155-ext');
+    bytes32 internal constant ERC20_EXT = keccak256('erc20-ext');
 
     // Reserved Addresses
     address internal constant GUILD = address(0xdead);
@@ -78,7 +78,7 @@ library stoHelper {
 
 
 
-    function msgSender(stoRegistry sto, address addr)
+    function msgSender(StoRegistry sto, address addr)
         internal
         view
         returns (address)
@@ -131,12 +131,12 @@ library stoHelper {
      * 3. The sender is an adapter.
      */
     // slither-disable-next-line calls-loop
-    function isInCreationModeAndHasAccess(stoRegistry sto)
+    function isInCreationModeAndHasAccess(StoRegistry sto)
         internal
         view
         returns (bool)
     {
         return
-            sto.state() == stoRegistry.stoState.CREATION;
+            sto.state() == StoRegistry.stoState.CREATION;
     }
 }

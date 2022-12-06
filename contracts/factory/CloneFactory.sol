@@ -44,7 +44,7 @@ contract CloneFactory {
             )
             result := create(0, clone, 0x37)
         }
-        require(result != address(0), "create failed");
+        require(result != address(0), 'create failed');
     }
 
     function _isClone(address target, address query)

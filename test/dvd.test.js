@@ -6,7 +6,7 @@ const {
   IdentityRegistry,
   TrustedIssuersRegistry,
   IssuerIdentity,
-  Token,
+  KonneticToken,
   Compliance,
   IdentityRegistryStorage,
   Proxy,
@@ -57,7 +57,7 @@ contract('DVDTransferManager', (accounts) => {
     tokenName = 'TREXDINO';
     tokenSymbol = 'TREX';
     tokenDecimals = '0';
-    token = await Token.new();
+    token = await KonneticToken.new();
 
     const implementation = await Implementation.new(token.address, { from: tokeny });
 
@@ -71,7 +71,7 @@ contract('DVDTransferManager', (accounts) => {
       tokenOnchainID.address,
       { from: tokeny },
     );
-    token = await Token.at(proxy.address);
+    token = await KonneticToken.at(proxy.address);
 
     await identityRegistryStorage.bindIdentityRegistry(identityRegistry.address, { from: tokeny });
     await token.addAgentOnTokenContract(agent, { from: tokeny });

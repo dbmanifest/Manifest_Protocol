@@ -158,7 +158,7 @@ contract OwnerManager is OwnerRoles {
     function callSetTokenName(string calldata _name, IIdentity _onchainID) external {
         require(
             isTokenInfoManager(address(_onchainID)) && _onchainID.keyHasPurpose(keccak256(abi.encode(msg.sender)), 2),
-            'Role: Sender is NOT Token Information Manager'
+            'Role: Sender is NOT KonneticToken Information Manager'
         );
         token.setName(_name);
     }
@@ -174,7 +174,7 @@ contract OwnerManager is OwnerRoles {
     function callSetTokenSymbol(string calldata _symbol, IIdentity _onchainID) external {
         require(
             isTokenInfoManager(address(_onchainID)) && _onchainID.keyHasPurpose(keccak256(abi.encode(msg.sender)), 2),
-            'Role: Sender is NOT Token Information Manager'
+            'Role: Sender is NOT KonneticToken Information Manager'
         );
         token.setSymbol(_symbol);
     }
@@ -190,7 +190,7 @@ contract OwnerManager is OwnerRoles {
     function callSetTokenOnchainID(address _tokenOnchainID, IIdentity _onchainID) external {
         require(
             isTokenInfoManager(address(_onchainID)) && _onchainID.keyHasPurpose(keccak256(abi.encode(msg.sender)), 2),
-            'Role: Sender is NOT Token Information Manager'
+            'Role: Sender is NOT KonneticToken Information Manager'
         );
         token.setOnchainID(_tokenOnchainID);
     }

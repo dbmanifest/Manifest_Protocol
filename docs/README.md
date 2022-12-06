@@ -1,4 +1,4 @@
-# Understanding Token Transfer
+# Understanding KonneticToken Transfer
 
 Here we explore the tokenTransfer.test.js file to understand the flow of things in our protocol.
 
@@ -19,7 +19,7 @@ We defined the various roles in our ecosystem. Tokeny here is the company that i
   claimTopicsRegistry = await ClaimTopicsRegistry.new({ from: tokeny });
   trustedIssuersRegistry = await TrustedIssuersRegistry.new({ from: tokeny });
   identityRegistry = await IdentityRegistry.new(trustedIssuersRegistry.address, claimTopicRegistry.address, { from: tokeny });
-  token = await Token.new(identityRegistry.address, { from: tokeny });
+  token = await KonneticToken.new(identityRegistry.address, { from: tokeny });
 ```
 
 Tokeny deploys the claim topics registry and the trusted issuers registry. It then deploys the identity registry with addresses of claimTopicsRegistry and trustedIssuersRegistry as constructor parameters(it also can be set later). Lastly, Tokeny deploys the token with the address of identity registry as constructor parameter. Now the shares of Tokeny are up in the blockchain.
@@ -141,7 +141,7 @@ Since both user1 and user2 are regulated investors according to KYC check (they 
 ```
   user1 balance: 700
   user2 balance: 300
-    ✓ Successful Token transfer (176ms)
+    ✓ Successful KonneticToken transfer (176ms)
 ```
 
 So, the compliant transfer of tokens is a success. These identites of investors will not be limited to just Tokeny's security tokens. It can be extended to all kind of securities.

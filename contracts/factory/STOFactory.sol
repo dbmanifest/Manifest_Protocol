@@ -1,9 +1,9 @@
 pragma solidity ^0.8.0;
 
 // SPDX-License-Identifier: MIT
-import "./CloneFactory.sol";
-import "../token/KonneticToken.sol";
-import "../factory/stoRegistry.sol";
+import './CloneFactory.sol';
+import '../token/KonneticToken.sol';
+import '../factory/stoRegistry.sol';
 
 /**
 MIT License
@@ -25,7 +25,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-contract stoFactory is CloneFactory {
+contract StoFactory is CloneFactory {
     struct Adapter {
         bytes32 id;
         address addr;
@@ -44,10 +44,10 @@ contract stoFactory is CloneFactory {
      * @param _address The STO address.
      * @param _name The STO name.
      */
-    event stoCreated(address _address, string _name);
+    event StoCreated(address _address, string _name);
 
     constructor(address _identityAddress) {
-        require(_identityAddress != address(0x0), "invalid addr");
+        require(_identityAddress != address(0x0), 'invalid addr');
         identityAddress = _identityAddress;
     }
 
@@ -62,7 +62,7 @@ contract stoFactory is CloneFactory {
         bytes32 hashedName = keccak256(abi.encode(stoName));
         require(
             addresses[hashedName] == address(0x0),
-            string(abi.encodePacked("name ", stoName, " already taken"))
+            string(abi.encodePacked('name ', stoName, ' already taken'))
         );
 
         KonneticToken sto = KonneticToken(_createClone(identityAddress));
@@ -104,7 +104,7 @@ contract stoFactory is CloneFactory {
         //Registring Adapters
         require(
             sto.state() == stoRegistry.stoState.CREATION,
-            "this sto has already been setup"
+                'this sto has already been setup'
         );
 
         for (uint256 i = 0; i < adapters.length; i++) {
@@ -135,7 +135,7 @@ contract stoFactory is CloneFactory {
         //Registring Adapters
         require(
             sto.state() == stoRegistry.stoState.CREATION,
-            "this sto has already been setup"
+            'this sto has already been setup'
         );
 
         for (uint256 i = 0; i < adapters.length; i++) {
@@ -158,7 +158,7 @@ contract stoFactory is CloneFactory {
     function updateAdapter(stoRegistry sto, Adapter calldata adapter) external {
         require(
             sto.state() == stoRegistry.stoState.CREATION,
-            "this sto has already been setup"
+            'this sto has already been setup'
         );
 
         sto.replaceAdapter(

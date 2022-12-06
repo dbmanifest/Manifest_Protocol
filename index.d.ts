@@ -3,7 +3,7 @@ export namespace contracts {
   export const DefaultCompliance: any;
   export const IdentityRegistryStorage: any;
   export const IdentityRegistry: any;
-  export const Token: any;
+  export const KonneticToken: any;
   export const TrustedIssuersRegistry: any;
   export const DVDTransferManager: any;
   export const ImplementationAuthority: any;

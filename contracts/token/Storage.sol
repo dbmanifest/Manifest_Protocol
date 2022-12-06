@@ -32,7 +32,7 @@ contract TokenStorage {
     mapping(address => mapping(address => uint256)) internal _allowances;
     uint256 internal _totalSupply;
 
-    /// @dev Token information
+    /// @dev KonneticToken information
     string internal tokenName;
     string internal tokenSymbol;
     uint8 internal tokenDecimals;

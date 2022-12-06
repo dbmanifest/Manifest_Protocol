@@ -7,7 +7,7 @@ const {
   IdentityRegistryStorage,
   Implementation,
   IssuerIdentity,
-  Token,
+  KonneticToken,
   TrustedIssuersRegistry,
   Proxy,
 } = require('./helpers/artifacts');
@@ -60,7 +60,7 @@ contract('Agent Manager', ([tokeny, claimIssuer, user1, user2, user3, agent, adm
     tokenSymbol = 'TREX';
     tokenDecimals = '0';
 
-    token = await Token.new();
+    token = await KonneticToken.new();
 
     implementation = await Implementation.new(token.address);
 
@@ -73,7 +73,7 @@ contract('Agent Manager', ([tokeny, claimIssuer, user1, user2, user3, agent, adm
       tokenDecimals,
       tokenOnchainID.address,
     );
-    token = await Token.at(proxy.address);
+    token = await KonneticToken.at(proxy.address);
 
     agentManager = await AgentManager.new(token.address, { from: agent });
     await identityRegistryStorage.bindIdentityRegistry(identityRegistry.address, { from: tokeny });

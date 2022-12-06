@@ -2,8 +2,8 @@ pragma solidity ^0.8.0;
 
 // SPDX-License-Identifier: MIT
 
-import "../factory/stoRegistry.sol";
-import "../helpers/stoHelper.sol";
+import '../factory/stoRegistry.sol';
+import '../helpers/stoHelper.sol';
 
 /**
 MIT License
@@ -36,13 +36,13 @@ abstract contract AdapterGuard {
         require(
             sto.isAdapter(msg.sender) ||
                 stoHelper.isInCreationModeAndHasAccess(sto),
-            "onlyAdapter"
+            'onlyAdapter'
         );
         _;
     }
 
     modifier reentrancyGuard(stoRegistry sto) {
-        require(sto.lockedAt() != block.number, "reentrancy guard");
+        require(sto.lockedAt() != block.number, 'reentrancy guard');
         sto.lockSession();
         _;
         sto.unlockSession();
@@ -50,9 +50,9 @@ abstract contract AdapterGuard {
 
     modifier executorFunc(stoRegistry sto) {
         address executorAddr = sto.getExtensionAddress(
-            keccak256("executor-ext")
+            keccak256('executor-ext')
         );
-        require(address(this) == executorAddr, "only callable by the executor");
+        require(address(this) == executorAddr, 'only callable by the executor');
         _;
     }
 
@@ -60,7 +60,7 @@ abstract contract AdapterGuard {
         require(
             stoHelper.isInCreationModeAndHasAccess(sto) ||
                 sto.hasAdapterAccess(msg.sender, flag),
-            "accessDenied"
+            'accessDenied'
         );
         _;
     }

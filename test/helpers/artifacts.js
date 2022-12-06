@@ -2,7 +2,7 @@ const ClaimTopicsRegistry = artifacts.require('../contracts/registry/ClaimTopics
 const IdentityRegistry = artifacts.require('../contracts/registry/IdentityRegistry.sol');
 const TrustedIssuersRegistry = artifacts.require('../contracts/registry/TrustedIssuersRegistry.sol');
 const IssuerIdentity = artifacts.require('@onchain-id/solidity/contracts/ClaimIssuer.sol');
-const Token = artifacts.require('Token.sol');
+const KonneticToken = artifacts.require('KonneticToken.sol');
 const Compliance = artifacts.require('../contracts/compliance/DefaultCompliance.sol');
 const AgentManager = artifacts.require('../contracts/roles/AgentManager.sol');
 const IdentityRegistryStorage = artifacts.require('../contracts/registry/IdentityRegistryStorage.sol');
@@ -18,7 +18,7 @@ module.exports = {
   IdentityRegistry,
   TrustedIssuersRegistry,
   IssuerIdentity,
-  Token,
+  KonneticToken,
   Compliance,
   AgentManager,
   IdentityRegistryStorage,

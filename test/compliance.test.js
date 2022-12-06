@@ -12,7 +12,7 @@ const {
   IdentityRegistryStorage,
   Implementation,
   IssuerIdentity,
-  Token,
+  KonneticToken,
   TrustedIssuersRegistry,
   Proxy,
   LimitCompliance,
@@ -60,7 +60,7 @@ contract('Compliance', (accounts) => {
     tokenName = 'TREXDINO';
     tokenSymbol = 'TREX';
     tokenDecimals = '0';
-    token = await Token.new();
+    token = await KonneticToken.new();
 
     implementation = await Implementation.new(token.address);
 
@@ -73,7 +73,7 @@ contract('Compliance', (accounts) => {
       tokenDecimals,
       tokenOnchainID.address,
     );
-    token = await Token.at(proxy.address);
+    token = await KonneticToken.at(proxy.address);
 
     limitCompliance = await LimitCompliance.new(token.address, 2, { from: tokeny });
     await identityRegistryStorage.bindIdentityRegistry(identityRegistry.address, { from: tokeny });

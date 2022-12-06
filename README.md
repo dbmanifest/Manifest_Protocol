@@ -1,4 +1,4 @@
-# T-REX : Token for Regulated EXchanges
+# T-REX : KonneticToken for Regulated EXchanges
 
 ----
 
@@ -41,7 +41,7 @@ The project is fully described in the T-REX White Paper available [here](https:/
 
 Following the emergence of Bitcoin and other so-called crypto-currencies, the last years have seen through a wave of ICOs (Initial Coins Offerings), leveraging on the DLT technology underpinning most cryptocurrencies to support the issuance of other types of instruments. This wave has seen mainly the issuance of utility tokens in a completely unregulated environment. More recently, we have seen a new type of tokens emerging in the form of security (or investment) tokens which, in essence - and a number of regulators have started to confirm that - should be assimilated to securities i.e. equivalents to traditional securities but which are issued, maintained and transferred on a DLT infrastructure. One of the most important features that security tokens bear is, contrary to utility tokens, the fact that existing securities laws and practices should be considered as applying to them and, among others, all requirements in terms of KYC and AML regulations which, essentially, aim at controlling who holds a security and transacts in it in order to detect and prevent money-laundering, terrorism financing and other illegal or fraudulent activities.
 
-The main goal of the T-REX standard is to create a set of global tools, fully based on blockchain technologies, to allow frictionless and compliant issuance and use of tokenized securities on a peer to peer basis or through marketplaces but in full compliance with regulations and issuers requirements, by embedding controls mechanisms in the tokens themselves. With T-REX, we are implementing a “Compliance by Design” approach where it is simply impossible for an investor to buy a security without being compliant. The regulator itself can verify the compliance of the Issuer through the auditing of the smart contracts that support the Security Token life cycle.
+The main goal of the T-REX standard is to create a set of global tools, fully based on blockchain technologies, to allow frictionless and compliant issuance and use of tokenized securities on a peer to peer basis or through marketplaces but in full compliance with regulations and issuers requirements, by embedding controls mechanisms in the tokens themselves. With T-REX, we are implementing a “Compliance by Design” approach where it is simply impossible for an investor to buy a security without being compliant. The regulator itself can verify the compliance of the Issuer through the auditing of the smart contracts that support the Security KonneticToken life cycle.
 
 The management of compliant transactions through T-REX backed permission tokens will be based on 3 main pillars creating a decentralized Validator: 
 
@@ -64,7 +64,7 @@ These 3 key elements allow issuers to use a decentralized Validator to control t
 
 Although, so far, the rules applicable to issuing and holding utility tokens were largely undefined - or at least very vague - in most countries, an STO consists in the issuance of a security that uses the blockchain technology as its registry, proof of ownership and transfer infrastructure. Such instrument is regulated in every country and, as a consequence, STOs have to comply with the related regulations of the country where the security token is issued as well as those of the countries where it is distributed (sold). 
 
-Characteristics | Utility Token | Security Token
+Characteristics | Utility KonneticToken | Security KonneticToken
 :---: | :---: | :---:
 Purpose | Usage | Investment
 Regulation | Non existing or vague in most cases | Stringent as existing securities laws should be taken as reference
@@ -173,7 +173,7 @@ check the documentation of [T-REX](https://docs.tokeny.com/docs/smart-contracts)
   
 ## Additional References
 
-- [Understand Token Transfers on T-REX](https://github.com/TokenySolutions/T-REX/blob/master/docs/README.md)
+- [Understand KonneticToken Transfers on T-REX](https://github.com/TokenySolutions/T-REX/blob/master/docs/README.md)
 - [White Paper of T-REX Standard](https://tokeny.com/wp-content/uploads/2020/05/Whitepaper-T-REX-Security-Tokens-V3.pdf)
 - [Slides of the ERC Identity presentation by Fabian Vogelsteller](https://www.slideshare.net/FabianVogelsteller/erc-725-identity)
 - [EDDITS White Paper](https://eddits.io/wp-content/uploads/2018/03/EDDITS-Whitepaper.pdf)

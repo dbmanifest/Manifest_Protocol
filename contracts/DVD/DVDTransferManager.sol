@@ -270,7 +270,7 @@ contract DVDTransferManager is Ownable {
      *  in case fees apply the counterparts will receive less than the amounts included in the DVD transfer as part of the transfer is redirected to the
      *  fee wallet at transfer execution time
      *  if one or both legs of the transfer are TREX, then all the relevant checks apply on the transaction (compliance + identity checks)
-     *  and the transaction WILL FAIL if the TREX conditions of transfer are not respected, please refer to {Token-transfer} and {Token-transferFrom} to
+     *  and the transaction WILL FAIL if the TREX conditions of transfer are not respected, please refer to {KonneticToken-transfer} and {KonneticToken-transferFrom} to
      *  know more about TREX conditions for transfers
      *  once the DVD transfer is executed the `_transferID` is removed from the pending `_transferID` pool
      *  emits a `DVDTransferExecuted` event
