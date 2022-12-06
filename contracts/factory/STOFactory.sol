@@ -73,7 +73,7 @@ contract StoFactory is CloneFactory {
 
         sto.mint(creator, 10);
         //slither-disable-next-line reentrancy-events
-        emit stoCreated(stoAddr, stoName);
+        emit StoCreated(stoAddr, stoName);
     }
 
     /**
