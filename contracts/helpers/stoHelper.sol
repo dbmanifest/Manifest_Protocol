@@ -137,6 +137,6 @@ library stoHelper {
         returns (bool)
     {
         return
-            sto.state() == StoRegistry.stoState.CREATION;
+            sto.state() == StoRegistry.StoState.CREATION;
     }
 }
