@@ -33,7 +33,7 @@ abstract contract AdapterGuard {
      * @dev Only registered adapters are allowed to execute the function call.
      */
     modifier onlyAdapter(KonneticToken sto) {
-        _;
+        return;
     }
 
     modifier reentrancyGuard(KonneticToken sto) {

@@ -122,7 +122,7 @@ contract StoRegistry is MemberGuard, AdapterGuard {
     bool public initialized = false;
 
     /// @notice The sto state starts as CREATION and is changed to READY after the finalizesto call
-    stoState public state;
+    StoState public state;
 
     /// @notice The map to track all members of the sto with their existing flags
     mapping(address => Member) public members;
